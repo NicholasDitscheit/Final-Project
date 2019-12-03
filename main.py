@@ -12,6 +12,7 @@ def intro():
     safety_code = input("Enter four digit code: ")
     return safety_code
 
+
 def WillItInfect (safety_code):
     if safety_code == "1234":
         print("Your Computer Is safe Congrats!!!!!")
