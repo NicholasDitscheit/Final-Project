@@ -14,6 +14,7 @@ def intro():
     safety_code = input("Enter four digit code (hint: Ripon College): ")
     return safety_code
 
+
 SIGNATURE = "sig"
 
 def search(path):
